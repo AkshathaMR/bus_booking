@@ -8,69 +8,78 @@ pipeline {
         MAVEN_HOME = '/usr/share/maven'
         PATH = "${JAVA_HOME}/bin:${MAVEN_HOME}/bin:${env.PATH}"
     }
+
     stages {
-        stage('checkout') {
+        stage('Checkout') {
             steps {
                 script {
-                 pipeline.checkoutCode()
+                    pipeline.checkoutCode()
                 }
             }
         }
-        stage('setup java ') {
+
+        stage('Setup Java') {
             steps {
                 script {
-                 pipeline.setupJava17()
+                    pipeline.setupJava17()
                 }
             }
         }
-        stage('setup mvn ') {
+
+        stage('Setup Maven') {
             steps {
                 script {
-                 pipeline.setupMaven()
-                }
-            }
-        }  
-        stage('setup build ') {
-            steps {
-                script {
-                 pipeline.buildProject()
-                }
-            }
-        }        
-        stage('upload artifact ') {
-            steps {
-                script {
-                 pipeline.uploadArtifact('target/*.jar')
-                } 
-            }
-        } 
-        stage('run application ') {
-            steps {
-                script {
-                 pipeline.runSpringBootApp()
-                }
-            }
-        } 
-        stage('validate application ') {
-            steps {
-                script {
-                 pipeline.validateAppRunning()
+                    pipeline.setupMaven()
                 }
             }
         }
-        stage('stop spring ') {
+
+        stage('Build Project') {
             steps {
                 script {
-                 pipeline.stopSpringBootApp()
+                    pipeline.buildProject()
+                }
+            }
+        }
+
+        stage('Upload Artifact') {
+            steps {
+                script {
+                    pipeline.uploadArtifact('target/*.jar')
+                }
+            }
+        }
+
+        stage('Run Application') {
+            steps {
+                script {
+                    pipeline.runSpringBootApp()
+                }
+            }
+        }
+
+        stage('Validate Application') {
+            steps {
+                script {
+                    pipeline.validateAppRunning()
+                }
+            }
+        }
+
+        stage('Stop Spring Boot') {
+            steps {
+                script {
+                    pipeline.stopSpringBootApp()
                 }
             }
         }
     }
-        post {
+
+    post {
         always {
             script {
-                 pipeline.cleanupProcesses()
+                pipeline.cleanupProcesses()
+            }
         }
-      }
-   }
+    }
 }
