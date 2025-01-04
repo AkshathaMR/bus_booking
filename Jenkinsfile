@@ -8,69 +8,78 @@ pipeline {
         MAVEN_HOME = '/usr/share/maven'
         PATH = "${JAVA_HOME}/bin:${MAVEN_HOME}/bin:${env.PATH}"
     }
+
     stages {
         stage('checkout') {
             steps {
                 script {
-                 buildtest.checkoutCode()
+                    buildtest.checkoutCode()
                 }
             }
         }
-        stage('setup java ') {
+
+        stage('setup java') {
             steps {
                 script {
-                 buildtest.setupJava17()
+                    buildtest.setupJava17()
                 }
             }
         }
-        stage('setup mvn ') {
+
+        stage('setup mvn') {
             steps {
                 script {
-                 buildtest.setupMaven()
-                }
-            }
-        }  
-        stage('setup build ') {
-            steps {
-                script {
-                 buildtest.buildProject()
-                }
-            }
-        }        
-        stage('upload artifact ') {
-            steps {
-                script {
-                 buildtest.uploadArtifact('target/*.jar')
-                } 
-            }
-        } 
-        stage('run application ') {
-            steps {
-                script {
-                 buildtest.runSpringBootApp()
-                }
-            }
-        } 
-        stage('validate application ') {
-            steps {
-                script {
-                 buildtest.validateAppRunning()
+                    buildtest.setupMaven()
                 }
             }
         }
-        stage('stop spring ') {
+
+        stage('setup build') {
             steps {
                 script {
-                 buildtest.stopSpringBootApp()
+                    buildtest.buildProject()
+                }
+            }
+        }
+
+        stage('upload artifact') {
+            steps {
+                script {
+                    buildtest.uploadArtifact('target/*.jar')
+                }
+            }
+        }
+
+        stage('run application') {
+            steps {
+                script {
+                    buildtest.runSpringBootApp()
+                }
+            }
+        }
+
+        stage('validate application') {
+            steps {
+                script {
+                    buildtest.validateAppRunning()
+                }
+            }
+        }
+
+        stage('stop spring') {
+            steps {
+                script {
+                    buildtest.stopSpringBootApp()
                 }
             }
         }
     }
-post {
+
+    post {
         always {
             script {
-                 buildtest.cleanupProcesses()
+                buildtest.cleanupProcesses()
+            }
         }
-      }
-   }
+    }
 }
