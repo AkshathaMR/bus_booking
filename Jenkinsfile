@@ -1,4 +1,4 @@
-@Library('my-shared-Library@main') _  // Correct syntax
+@Library('my-shared-library@main') _
 
 pipeline {
     agent { label 'slave' }
@@ -10,18 +10,16 @@ pipeline {
     }
 
     stages {
-        stage('All code') {
+        stage('pipeline') {
             steps {
-                All()
+                pipeline() // Assumes this is defined in the shared library
             }
         }
-
-        
     }
 
     post {
         always {
-            cleanup()
-        }
-    }
+            cleanup() // Assumes this is defined in the shared library
+        }
+    }
 }
