@@ -66,20 +66,5 @@ pipeline {
             }
         }
 
-        stage('Stop Spring Boot') {
-            steps {
-                script {
-                    pipeline.stopSpringBootApp()
-                }
-            }
-        }
-    }
-
-    post {
-        always {
-            script {
-                pipeline.cleanupProcesses()
-            }
-        }
     }
 }
